@@ -1,32 +1,70 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
+using programacaoII_back_end.Infra.Data;
 
 namespace programacaoII_back_end.Controllers;
 
 [ApiController]
-[Route("[controller]")]
 public class ConexaoController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    private readonly IConfiguration _configuration;
+    private readonly BancoDadosContext _context;
 
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public ConexaoController(IConfiguration configuration, BancoDadosContext context)
     {
-        _logger = logger;
+        _configuration = configuration;
+        _context = context;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpGet("teste-conexao-dapper")]
+    public IActionResult TesteDapper()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        var connectionString = _configuration.GetConnectionString("DefaultConnection");
+        using (var db = new MySqlConnection(connectionString))
+        {
+            try
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                db.Open();
+                return Ok("Conexão realizada com sucesso");
+            }
+            catch (Exception excecao)
+            {
+                return StatusCode(500, $"A conexão falhou: {excecao.Message}");
+            }
+        }
+    }
+    
+    [HttpGet("teste-conexao-entity")]
+    public IActionResult TesteEntity()
+    {
+        try
+        {
+            _context.Database.OpenConnection();
+            _context.Database.CloseConnection();
+            return Ok("Conexão realizada com sucesso");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"A conexão falhou: {ex.Message}");
+        }
+    }
+    
+    [HttpGet("teste-conexao-ado-net")]
+    public IActionResult TesteAdoNet()
+    {
+        var connectionString = _configuration.GetConnectionString("DefaultConnection");
+        using (var db = new MySqlConnection(connectionString))
+        {
+            try
+            {
+                db.Open();
+                return Ok("Conexão realizada com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"A conexão falhou: {ex.Message}");
+            }
+        }
     }
 }
