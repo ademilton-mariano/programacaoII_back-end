@@ -1,16 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-using programacaoII_back_end.Infra.Data;
+using programacaoII_back_end.CrossCutting.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<BancoDadosContext>(options =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-});
-        
+builder.Services.ConfigurarInjecao(builder.Configuration);   
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
