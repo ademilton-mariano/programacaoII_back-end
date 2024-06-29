@@ -3,7 +3,7 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
-/appsettings.json
-/appsettings.Development.json
+programacaoII_back-end/appsettings.json
+programacaoII_back-end/appsettings.Development.json
 .idea/
 .history/
