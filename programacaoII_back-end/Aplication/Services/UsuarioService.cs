@@ -15,7 +15,13 @@ public class UsuarioService : IUsuarioService
 
     public Usuario? ObterPorEmail(string email)
     {
-        var retorno = _usuarioRepository.ObterPorEmail(email);
+        var retorno = _usuarioRepository.ObterUsuarioPorEmail(email);
+        return retorno;
+    }
+    
+    public Usuario CadastrarUsuario(Usuario usuario)
+    {
+        var retorno = _usuarioRepository.CadastrarUsuario(usuario);
         return retorno;
     }
 }

@@ -4,5 +4,6 @@ namespace programacaoII_back_end.Domain.Interfaces.Repositories;
 
 public interface IUsuarioRepository
 {
-    Usuario? ObterPorEmail(string email);
+    Usuario? ObterUsuarioPorEmail(string email);
+    Usuario CadastrarUsuario(Usuario usuario);
 }

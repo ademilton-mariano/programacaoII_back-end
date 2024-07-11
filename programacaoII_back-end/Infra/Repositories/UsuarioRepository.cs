@@ -13,10 +13,17 @@ public class UsuarioRepository : IUsuarioRepository
         _context = context;
     }
 
-    public Usuario? ObterPorEmail(string email)
+    public Usuario? ObterUsuarioPorEmail(string email)
     {
         var retorno = _context.Usuarios
             .FirstOrDefault(u => u.Email == email);
         return retorno;
+    }
+
+    public Usuario CadastrarUsuario(Usuario usuario)
+    {
+        _context.Usuarios.Add(usuario);
+        _context.SaveChanges();
+        return usuario;
     }
 }
