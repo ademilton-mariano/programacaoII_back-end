@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using programacaoII_back_end.Infra.Data;
 
-namespace programacaoII_back_end.Controllers;
+namespace programacaoII_back_end.WebAPI.Controllers;
 
 [ApiController]
 public class ConexaoController : ControllerBase
