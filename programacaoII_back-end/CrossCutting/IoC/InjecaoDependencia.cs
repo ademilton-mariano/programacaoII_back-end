@@ -17,9 +17,11 @@ public static class InjecaoDependencia
         
         //servicos
         services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddScoped<ITarefaService, TarefaService>();
 
         //repositorios
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<ITarefaRepository, TarefaRepository>();
 
         return services;
     }
