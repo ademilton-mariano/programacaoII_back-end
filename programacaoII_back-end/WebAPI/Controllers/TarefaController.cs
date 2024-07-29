@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using programacaoII_back_end.Aplication.ViewModels;
 using programacaoII_back_end.Domain.Interfaces.Services;
 
 namespace programacaoII_back_end.WebAPI.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
 public class TarefaController : ControllerBase
 {
     private readonly ITarefaService _tarefaService;
@@ -45,11 +49,17 @@ public class TarefaController : ControllerBase
         }
     }
     
-    [HttpPost("{idUsuario:int}")]
-    public IActionResult AdicionarTarefa([FromBody] TarefaViewModel tarefaViewModel, int idUsuario)
+    [HttpPost]
+    public IActionResult AdicionarTarefa([FromBody] TarefaViewModel tarefaViewModel)
     {
         try
         {
+            var obterUsuarioClaims = User.Claims.FirstOrDefault(c => c.Type == "Id");
+            if (obterUsuarioClaims == null)
+                return Unauthorized("Usuário não autenticado");
+            
+            var idUsuario = int.Parse(obterUsuarioClaims.Value);
+            
             var tarefa = _tarefaService.AdicionarTarefa(tarefaViewModel, idUsuario);
             return Ok(tarefa);
         }

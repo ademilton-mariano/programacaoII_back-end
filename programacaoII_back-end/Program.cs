@@ -4,7 +4,7 @@ using programacaoII_back_end.CrossCutting.IoC;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.ConfigurarJwt(builder.Configuration);
 builder.Services.ConfigurarInjecao(builder.Configuration);   
 builder.Services.AddControllers()
     .AddJsonOptions( options =>
@@ -23,6 +23,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
